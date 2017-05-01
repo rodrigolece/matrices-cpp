@@ -1,0 +1,3 @@
+*.o
+use_vectors*
+use_matrices
