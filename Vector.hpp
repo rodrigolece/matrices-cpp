@@ -63,6 +63,8 @@ public:
    // functions that are friends
    friend double norm(Vector& v, int p);
    friend int length(const Vector& v);
+   friend Matrix diag(const Vector& vec);
+   friend Vector diag(const Matrix& mat);
 };
 
 
@@ -84,5 +86,6 @@ Vector operator-(const Vector& v);
 double norm(Vector& v, int p=2);
 // Prototype signature of length() friend function
 int length(const Vector& v);
+Vector diag(const Matrix& mat);
 
 #endif

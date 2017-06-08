@@ -1,7 +1,7 @@
 #include <iostream>
 #include <algorithm> // In order to use max
 #include <cassert>
-#include <iomanip>
+#include <iomanip> // to use setw
 #include "Matrix.hpp"
 #include "Vector.hpp"
 
@@ -236,6 +236,15 @@ Matrix eye(int n) {
   Matrix out(n, n);
   for (int i = 0; i < n; i++) {
     out.mData[i][i] = 1.0;
+  }
+  return out;
+}
+
+Matrix diag(const Vector& vec) {
+  int n = length(vec);
+  Matrix out(n, n);
+  for (int i = 0; i < n; i++) {
+    out.mData[i][i] = vec.mData[i];
   }
   return out;
 }

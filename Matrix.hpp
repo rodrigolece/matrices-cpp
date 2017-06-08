@@ -51,6 +51,8 @@ public:
   friend Matrix transpose(const Matrix& mat);
   friend int* size(const Matrix& mat);
   friend Matrix eye(int n);
+  friend Matrix diag(const Vector& vec);
+  friend Vector diag(const Matrix& mat);
 };
 
 Matrix operator+(const Matrix& mat1, const Matrix& mat2);
@@ -65,5 +67,6 @@ Matrix operator*(const Matrix& matA, const Matrix& matB);
 Matrix transpose(const Matrix& mat);
 int* size(const Matrix& mat);
 Matrix eye(int n);
+Matrix diag(const Vector& vec);
 
 #endif

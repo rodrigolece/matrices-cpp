@@ -4,6 +4,7 @@
 
 
 #include <iostream>
+#include <algorithm> // In order to use max
 #include <cassert>
 #include "Vector.hpp"
 #include "Matrix.hpp"
@@ -445,7 +446,7 @@ std::ostream& operator<<(std::ostream& output, const Vector& v) {
       if (i != v.mSize-1)
 	output  << ", ";
       else
-	output  << ")";
+	output  << ")\n";
     }
   return output;  // for multiple << operators.
 }
@@ -492,4 +493,13 @@ double Vector::norm(int p) const
 int length(const Vector& v)
 {
   return v.mSize;
+}
+
+Vector diag(const Matrix& mat) {
+  int n = std::min(mat.mSize[0], mat.mSize[1]);
+  Vector out(n);
+  for (int i = 0; i < n; i++) {
+    out.mData[i] = mat.mData[i][i];
+  }
+  return out;
 }
