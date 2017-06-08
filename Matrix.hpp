@@ -16,7 +16,7 @@
 class Vector; // Forward declaration
 
 class Matrix {
-protected:
+private:
   double** mData;
   int mSize[2];
 
