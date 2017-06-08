@@ -251,15 +251,8 @@ Matrix diag(const Vector& vec) {
 }
 
 
-/* ----------------- SymmetricMatrix ----------------- */
 
-PositiveDefiniteMatrix::PositiveDefiniteMatrix(int size) : Matrix (size, size) {
- for (int i = 0; i < size; i++) {
-   mData[i][i] = 1.0;
- }
-}
-
-Vector cgs(const SymmPosDefMatrix& A, const Vector& b, const Vector& x0, double tol) {
+Vector cgs(const Matrix& A, const Vector& b, const Vector& x0, double tol) {
   int n = length(b);
   assert(size(A)[0] == n);
   Vector out(n);
