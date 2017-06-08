@@ -2,6 +2,7 @@
 #include <algorithm> // In order to use max
 #include <cassert>
 #include <iomanip> // to use setw
+#include <cmath>
 #include "Matrix.hpp"
 #include "Vector.hpp"
 
@@ -245,6 +246,43 @@ Matrix diag(const Vector& vec) {
   Matrix out(n, n);
   for (int i = 0; i < n; i++) {
     out.mData[i][i] = vec.mData[i];
+  }
+  return out;
+}
+
+
+/* ----------------- SymmetricMatrix ----------------- */
+
+PositiveDefiniteMatrix::PositiveDefiniteMatrix(int size) : Matrix (size, size) {
+ for (int i = 0; i < size; i++) {
+   mData[i][i] = 1.0;
+ }
+}
+
+Vector cgs(const SymmPosDefMatrix& A, const Vector& b, const Vector& x0, double tol) {
+  int n = length(b);
+  assert(size(A)[0] == n);
+  Vector out(n);
+
+  Vector r = b - A*x0;
+  Vector p(r);
+  Vector Ap(n); // There is no default constructor
+  double norm_r_old = r * r, norm_r_new, alpha, beta;
+
+  for (int k = 0; k < n; k++) {
+    Ap = A * p;
+    alpha = norm_r_old / (p * Ap); // This is inner product so don't need traspose of p
+    out = out + alpha * p;
+    r = r - alpha * Ap;
+    norm_r_new = r * r;
+
+    if (sqrt(norm_r_new) < tol) {
+      break;
+    }
+
+    beta = norm_r_new/norm_r_old;
+    p = r + beta * p;
+    norm_r_old = norm_r_new;
   }
   return out;
 }

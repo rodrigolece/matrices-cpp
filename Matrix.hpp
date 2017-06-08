@@ -16,7 +16,7 @@
 class Vector; // Forward declaration
 
 class Matrix {
-private:
+protected:
   double** mData;
   int mSize[2];
 
@@ -68,5 +68,25 @@ Matrix transpose(const Matrix& mat);
 int* size(const Matrix& mat);
 Matrix eye(int n);
 Matrix diag(const Vector& vec);
+
+class SymmetricMatrix: public virtual Matrix {
+public:
+  SymmetricMatrix(int size) : Matrix(size, size) {} // zeros matrix of given size
+  // Maybe something on assignment operation
+};
+
+class PositiveDefiniteMatrix: public virtual Matrix {
+public:
+  PositiveDefiniteMatrix(int size); // ones matrix of size n
+};
+
+
+class SymmPosDefMatrix: public SymmetricMatrix, public PositiveDefiniteMatrix {
+public:
+  SymmPosDefMatrix(int size) : Matrix(size, size), SymmetricMatrix(size), PositiveDefiniteMatrix(size) {}
+  // friend Vector cgs(const SymmPosDefMatrix& mat);
+};
+
+Vector cgs(const SymmPosDefMatrix& A, const Vector& b, const Vector& x0, double tol = 1e-10);
 
 #endif
