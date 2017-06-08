@@ -46,6 +46,7 @@ public:
    friend Vector operator*(const double& a, const Vector& v);
    friend Vector operator/(const Vector& v, const double& a);
    friend Vector operator*(const Matrix& mat, const Vector& vec);
+   friend Vector operator/(const Vector& vec, const Matrix& mat);
    // Unary operator
    friend Vector operator-(const Vector& v);
 
@@ -74,6 +75,8 @@ double operator*(const Vector& v1, const Vector& v2);
 Vector operator*(const Vector& v, const double& a);
 Vector operator*(const double& a, const Vector& v);
 Vector operator/(const Vector& v, const double& a);
+// Solution of linear system
+Vector operator/(const Vector& vec, const Matrix& mat);
 // Unary operator
 Vector operator-(const Vector& v);
 

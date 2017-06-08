@@ -4,7 +4,9 @@
 
 
 #include <iostream>
+#include <cassert>
 #include "Vector.hpp"
+#include "Matrix.hpp"
 
 
 // constructor that creates vector of given size with
@@ -283,6 +285,67 @@ Vector operator/(const Vector& v, const double& a)
     }
 
   return w;
+}
+
+Vector operator/(const Vector& vec, const Matrix& mat) {
+  int rows = mat.mSize[0]; int cols = mat.mSize[1];
+  assert(rows == vec.mSize);
+  assert(cols == rows);
+
+  Vector::Vector out(rows); // This initializes zero vector
+  Matrix::Matrix augmented_mat(rows, cols + 1);
+
+  for (int i = 0; i < rows; i++) {
+    for (int j = 0; j < cols; j++) {
+      augmented_mat.mData[i][j] = mat.mData[i][j];
+      augmented_mat.mData[i][cols] = vec.mData[i];
+    }
+  }
+
+  double pivot, l;
+  int max_row;
+
+  for (int j = 0; j < cols; j++) {
+    // Search for maximum in current column
+    pivot = fabs(augmented_mat.mData[j][j]);
+    max_row = j;
+    for (int i = j + 1; i < rows; i++) {
+        if (fabs(augmented_mat.mData[i][j]) > pivot) {
+            pivot = fabs(augmented_mat.mData[i][j]);
+            max_row = i;
+        }
+    }
+
+    // Swap current row with maximum row
+    if (max_row != j) { // Only done if rows are different
+      // std::cout << "Pivoting \n";
+      for (int k = j; k < cols + 1; k++) {
+        double tmp = augmented_mat.mData[max_row][k];
+        augmented_mat.mData[max_row][k] = augmented_mat.mData[j][k];
+        augmented_mat.mData[j][k] = tmp;
+      }
+    }
+
+
+    pivot = augmented_mat.mData[j][j]; // This is necessary because we had abs
+    for (int i = j + 1; i < rows; i++) {
+      l = augmented_mat.mData[i][j] / pivot;
+      for (int k = j; k < cols + 1; k++) {
+        augmented_mat.mData[i][k] -= l*augmented_mat.mData[j][k];
+      }
+    }
+    // std::cout << augmented_mat;
+  }
+
+  // We now solve the system
+  for (int j = cols - 1; j >= 0; j--) {
+      out.mData[j] = augmented_mat.mData[j][cols]/augmented_mat.mData[j][j];
+      for (int i = j - 1; i >= 0; i--) {
+            augmented_mat.mData[i][cols] -= augmented_mat.mData[i][j] * out.mData[j];
+        }
+  }
+
+  return out;
 }
 
 
