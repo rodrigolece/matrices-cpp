@@ -69,4 +69,6 @@ int* size(const Matrix& mat);
 Matrix eye(int n);
 Matrix diag(const Vector& vec);
 
+Vector cgs(const Matrix& A, const Vector& b, const Vector& x0, double tol = 1e-10);
+
 #endif
