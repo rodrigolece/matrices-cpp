@@ -1,6 +1,7 @@
 #include <iostream>
 #include <algorithm> // In order to use max
 #include <cassert>
+#include <iomanip>
 #include "Matrix.hpp"
 #include "Vector.hpp"
 
@@ -53,22 +54,28 @@ std::ostream& operator<<(std::ostream& output, const Matrix& mat) {
   int rows = mat.mSize[0];
   int cols = mat.mSize[1];
 
+  // char buffer [50];
+
   output << "(";
   for (int i = 0; i < rows; i++) {
 
-    // if (i > 0) {
-    //   output << "\t";
-    // }
+
 
     for (int j = 0; j < cols; j++) {
-      output << "\t" << mat.mData[i][j];
+      // output << "\t" << mat.mData[i][j];
+      if (i == 0 && j == 0) {
+        output << std::setw(9) << mat.mData[i][j];
+      } else {
+        output << std::setw(10) << mat.mData[i][j];
+      }
+      // sprintf(buffer, "%f", mat.mData[i][j]);
 
-      if (j == cols -1 && i != rows - 1) {
+      if (j == cols - 1 && i != rows - 1) {
         output << "\n";
       }
     }
 
-    if (i == rows -1) {
+    if (i == rows - 1) {
       output << "\t ) \n";
     }
 
@@ -174,7 +181,6 @@ Matrix operator/(const Matrix& mat, const double& a) {
 }
 
 Vector operator*(const Matrix& mat, const Vector& vec) {
-
   int rows = mat.mSize[0]; int cols = mat.mSize[1];
   assert(cols == vec.mSize);
 

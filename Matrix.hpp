@@ -22,7 +22,7 @@ private:
 
 public:
   Matrix(const Matrix& mat); // copy constructor
-  Matrix(int rows, int cols); // matrix of given
+  Matrix(int rows, int cols); // zeros matrix of given size
 
   // destructor
   ~Matrix();
@@ -31,7 +31,7 @@ public:
   friend std::ostream& operator<<(std::ostream& output, const Matrix& mat);
   // No prototype for chevron operator ouside because already defined in ostream
 
-  // Read-assign operator like Matlab's
+  // Read/assign operator like Matlab's
   double& operator()(int i, int j);
   // Assign operator
   Matrix& operator=(const Matrix& mat);
@@ -45,6 +45,7 @@ public:
   friend Matrix operator/(const Matrix& mat, const double& a);
   friend Vector operator*(const Matrix& mat, const Vector& vec);
   friend Matrix operator*(const Matrix& matA, const Matrix& matB);
+  friend Vector operator/(const Vector& vec, const Matrix& mat);
 
   // Other useful functions
   friend Matrix transpose(const Matrix& mat);
