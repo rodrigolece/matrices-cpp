@@ -399,28 +399,28 @@ Vector jacobi(const Matrix& A, const Vector& b, const Vector& x0, double tol, in
   Vector r = b - A*x0;
   double residue = norm(r);
 
-  Matrix M = diag(diag(A));
-  Matrix N = M - A;
-  Vector rhs = N*x0 + b;
+  // Matrix M = diag(diag(A));
+  // Matrix N = M - A;
+  // Vector rhs = N*x0 + b;
 
   while (residue > tol && iter < MAXITER) {
-    out = rhs/M;
-    rhs = N*out + b;
-    // for (int i = 0; i < n; i++) {
-    //   double tmp = 0.0;
-    //   for (int j = 0; j < n; j++) {
-    //     if (j == i) continue;
-    //     tmp += A.mData[i][j] * previous.mData[j];
-    //   }
-    //   out.mData[i] = (b.mData[i] - tmp)/A.mData[i][i];
-    // }
-
+    // out = rhs/M;
+    // rhs = N*out + b;
+    for (int i = 0; i < n; i++) {
+      double tmp = 0.0;
+      for (int j = 0; j < n; j++) {
+        if (j == i) continue;
+        tmp += A.mData[i][j] * previous.mData[j];
+      }
+      out.mData[i] = (b.mData[i] - tmp)/A.mData[i][i];
+    }
     previous = out;
+
     r = b - A*out;
     residue = norm(r);
     iter++;
   }
-  std::cout << "Jacobi converged in " << iter << " iterations \n";
+  // std::cout << "Jacobi converged in " << iter << " iterations \n";
   return out;
 }
 
@@ -434,31 +434,31 @@ Vector gaussSeidel(const Matrix& A, const Vector& b, const Vector& x0, double to
   Vector r = b - A*x0;
   double residue = norm(r);
 
-  Matrix M = tril(A);
-  Matrix N = M - A;
-  Vector rhs = N*x0 + b;
+  // Matrix M = tril(A);
+  // Matrix N = M - A;
+  // Vector rhs = N*x0 + b;
 
   while (residue > tol && iter < MAXITER) {
-    out = rhs/M;
-    rhs = N*out + b;
-    // for (int i = 0; i < n; i++) {
-    //   double tmp = 0.0;
-    //   for (int j = 0; j < n; j++) {
-    //     if (j < i) {
-    //       tmp += A.mData[i][j] * out.mData[j];
-    //     } else if (j > i) {
-    //       tmp += A.mData[i][j] * previous.mData[j];
-    //     }
-    //   }
-    //   out.mData[i] = (b.mData[i] - tmp)/A.mData[i][i];
-    // }
-
+    // out = rhs/M;
+    // rhs = N*out + b;
+    for (int i = 0; i < n; i++) {
+      double tmp = 0.0;
+      for (int j = 0; j < n; j++) {
+        if (j < i) {
+          tmp += A.mData[i][j] * out.mData[j];
+        } else if (j > i) {
+          tmp += A.mData[i][j] * previous.mData[j];
+        }
+      }
+      out.mData[i] = (b.mData[i] - tmp)/A.mData[i][i];
+    }
     previous = out;
+
     r = b - A*out;
     residue = norm(r);
     iter++;
   }
-  std::cout << "Gauss-Seidel converged in " << iter << " iterations \n";
+  // std::cout << "Gauss-Seidel converged in " << iter << " iterations \n";
   return out;
 }
 
@@ -472,34 +472,34 @@ Vector sor(const Matrix& A, const Vector& b, const Vector& x0, double omega, dou
   Vector r = b - A*x0;
   double residue = norm(r);
 
-  Matrix D = diag(diag(A));
-  Matrix L = tril(A) - D;
-  Matrix U = A - L - D;
-
-  Matrix lhs = D + omega*L;
-  Vector rhs = omega*b + ( (1-omega)*D - omega*U )*x0 ;
+  // Matrix D = diag(diag(A));
+  // Matrix L = tril(A) - D;
+  // Matrix U = A - L - D;
+  //
+  // Matrix lhs = D + omega*L;
+  // Vector rhs = omega*b + ( (1-omega)*D - omega*U )*x0 ;
 
   while (residue > tol && iter < MAXITER) {
-    // for (int i = 0; i < n; i++) {
-    //   double tmp = 0.0;
-    //   for (int j = 0; j < n; j++) {
-    //     if (j < i) {
-    //       tmp += A.mData[i][j] * out.mData[j];
-    //     } else if (j > i) {
-    //       tmp += A.mData[i][j] * previous.mData[j];
-    //     }
-    //   }
-    //   out.mData[i] = omega * (b.mData[i] - tmp)/A.mData[i][i] + (1-omega) * previous.mData[i];
-    // }
-    out = rhs/lhs;
-    rhs = omega*b + ( (1-omega)*D - omega*U )*out ;
-
+    // out = rhs/lhs;
+    // rhs = omega*b + ( (1-omega)*D - omega*U )*out;
+    for (int i = 0; i < n; i++) {
+      double tmp = 0.0;
+      for (int j = 0; j < n; j++) {
+        if (j < i) {
+          tmp += A.mData[i][j] * out.mData[j];
+        } else if (j > i) {
+          tmp += A.mData[i][j] * previous.mData[j];
+        }
+      }
+      out.mData[i] = omega * (b.mData[i] - tmp)/A.mData[i][i] + (1-omega) * previous.mData[i];
+    }
     previous = out;
+
     r = b - A*out;
     residue = norm(r);
     iter++;
   }
-  std::cout << "SOR converged in " << iter << " iterations \n";
+  // std::cout << "SOR converged in " << iter << " iterations \n";
   return out;
 }
 

@@ -47,7 +47,6 @@ public:
   friend Vector operator*(const Matrix& mat, const Vector& vec);
   friend Matrix operator*(const Matrix& matA, const Matrix& matB);
   friend Vector operator/(const Vector& vec, const Matrix& mat);
-  // friend Matrix& operator+=(const Matrix& rhs_mat);
 
   // Other useful functions
   friend double norm(const Matrix& mat, int p);
@@ -71,7 +70,6 @@ Matrix operator*(const double& a, const Matrix& mat);
 Matrix operator/(const Matrix& mat, const double& a);
 Vector operator*(const Matrix& mat, const Vector& vec);
 Matrix operator*(const Matrix& matA, const Matrix& matB);
-// Matrix& operator+=(const Matrix& rhs_mat);
 
 double norm(const Matrix& mat, int p = 2); // by default frobenius norm
 Matrix transpose(const Matrix& mat);
