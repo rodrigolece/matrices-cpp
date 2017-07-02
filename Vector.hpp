@@ -30,7 +30,8 @@ public:
    // constructors
    // No default constructor
    Vector(const Vector& v1); // overridden copy constructor
-   Vector(int sizeVal); // construct vector of given size
+   Vector(int sizeVal); // construct vector of zeros given size
+   Vector(int sizeVal, std::initializer_list<double> input);
 
    // destructor
    ~Vector();
@@ -65,6 +66,9 @@ public:
    friend int length(const Vector& v);
    friend Matrix diag(const Vector& vec);
    friend Vector diag(const Matrix& mat);
+   friend Vector jacobi(const Matrix& A, const Vector& b, const Vector& x0, double tol, int MAXITER);
+   friend Vector gaussSeidel(const Matrix& A, const Vector& b, const Vector& x0, double tol, int MAXITER);
+   friend Vector sor(const Matrix& A, const Vector& b, const Vector& x0, double omega, double tol, int MAXITER);
 };
 
 

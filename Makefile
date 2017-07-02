@@ -1,9 +1,9 @@
 all: use_matrices
 
 #For debugging
-OPT=-g -Wall
-#For optimistaion
-#OPT=-O
+OPT=-g -Wall -std=c++11 -O
+# need -std::c++11 to use initializer_list
+# -O for optimistaion
 
 #All objects (except main) come from cpp and hpp
 %.o:	%.cpp %.hpp

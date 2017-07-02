@@ -22,6 +22,18 @@ Vector::Vector(int sizeVal)
   }
 }
 
+Vector::Vector(int sizeVal, std::initializer_list<double> input)
+{
+  mData=new double[sizeVal];
+  mSize = sizeVal;
+  int k = 0;
+
+  for (int i=0; i<mSize; i++)
+  {
+     mData[i] = input.begin()[k];
+     k++;
+  }
+}
 
 
 

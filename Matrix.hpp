@@ -23,6 +23,7 @@ private:
 public:
   Matrix(const Matrix& mat); // copy constructor
   Matrix(int rows, int cols); // zeros matrix of given size
+  Matrix(int rows, int cols, std::initializer_list<double> input); // construct matrix from list
 
   // destructor
   ~Matrix();
@@ -39,20 +40,27 @@ public:
   // Binary operators
   friend Matrix operator+(const Matrix& mat1, const Matrix& mat2);
   friend Matrix operator-(const Matrix& mat);
-  friend Matrix operator-(const Matrix& mat1, const Matrix& mat2);
+  // friend Matrix operator-(const Matrix& mat1, const Matrix& mat2); // friend not necessary
   friend Matrix operator*(const Matrix& mat, const double& a);
-  friend Matrix operator*(const double& a, const Matrix& mat);
-  friend Matrix operator/(const Matrix& mat, const double& a);
+  // friend Matrix operator*(const double& a, const Matrix& mat);
+  // friend Matrix operator/(const Matrix& mat, const double& a);
   friend Vector operator*(const Matrix& mat, const Vector& vec);
   friend Matrix operator*(const Matrix& matA, const Matrix& matB);
   friend Vector operator/(const Vector& vec, const Matrix& mat);
+  // friend Matrix& operator+=(const Matrix& rhs_mat);
 
   // Other useful functions
+  friend double norm(const Matrix& mat, int p);
   friend Matrix transpose(const Matrix& mat);
   friend int* size(const Matrix& mat);
-  friend Matrix eye(int n);
   friend Matrix diag(const Vector& vec);
-  friend Vector diag(const Matrix& mat);
+  friend Vector diag(const Matrix& mat); // <---- check if unfriend is possible
+  friend Matrix triu(const Matrix& mat);
+  friend Matrix tril(const Matrix& mat);
+
+  friend Vector jacobi(const Matrix& A, const Vector& b, const Vector& x0, double tol, int MAXITER);
+  friend Vector gaussSeidel(const Matrix& A, const Vector& b, const Vector& x0, double tol, int MAXITER);
+  friend Vector sor(const Matrix& A, const Vector& b, const Vector& x0, double omega, double tol, int MAXITER);
 };
 
 Matrix operator+(const Matrix& mat1, const Matrix& mat2);
@@ -63,12 +71,25 @@ Matrix operator*(const double& a, const Matrix& mat);
 Matrix operator/(const Matrix& mat, const double& a);
 Vector operator*(const Matrix& mat, const Vector& vec);
 Matrix operator*(const Matrix& matA, const Matrix& matB);
+// Matrix& operator+=(const Matrix& rhs_mat);
 
+double norm(const Matrix& mat, int p = 2); // by default frobenius norm
 Matrix transpose(const Matrix& mat);
 int* size(const Matrix& mat);
 Matrix eye(int n);
 Matrix diag(const Vector& vec);
+Matrix triu(const Matrix& mat);
+Matrix tril(const Matrix& mat);
+Matrix zeros(int rows, int cols);
+Matrix ones(int rows, int cols);
 
 Vector cgs(const Matrix& A, const Vector& b, const Vector& x0, double tol = 1e-10);
+Vector jacobi(const Matrix& A, const Vector& b, const Vector& x0, double tol = 1e-6,
+              int MAXITER = 100);
+Vector gaussSeidel(const Matrix& A, const Vector& b, const Vector& x0,
+                   double tol = 1e-6, int MAXITER = 100);
+Vector sor(const Matrix& A, const Vector& b, const Vector& x0, double omega,
+           double tol = 1e-6, int MAXITER = 100);
 
+Matrix laplacian(int mesh_size);
 #endif
