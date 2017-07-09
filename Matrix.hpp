@@ -60,6 +60,8 @@ public:
   friend Vector jacobi(const Matrix& A, const Vector& b, const Vector& x0, double tol, int MAXITER);
   friend Vector gaussSeidel(const Matrix& A, const Vector& b, const Vector& x0, double tol, int MAXITER);
   friend Vector sor(const Matrix& A, const Vector& b, const Vector& x0, double omega, double tol, int MAXITER);
+
+  friend Matrix laplacian(int mesh_size);
 };
 
 Matrix operator+(const Matrix& mat1, const Matrix& mat2);
@@ -90,4 +92,7 @@ Vector sor(const Matrix& A, const Vector& b, const Vector& x0, double omega,
            double tol = 1e-6, int MAXITER = 100);
 
 Matrix laplacian(int mesh_size);
+Vector manufacturedSourceTerm(int mesh_size);
+Vector manufacturedSolution(int mesh_size);
+Vector sourceTerm(int mesh_size);
 #endif

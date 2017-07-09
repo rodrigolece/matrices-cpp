@@ -62,6 +62,7 @@ public:
    //norm (as a member method)
    double norm(int p=2) const;
    // functions that are friends
+   friend double infinity_norm(Vector& v);
    friend double norm(Vector& v, int p);
    friend int length(const Vector& v);
    friend Matrix diag(const Vector& vec);
@@ -87,6 +88,7 @@ Vector operator/(const Vector& vec, const Matrix& mat);
 Vector operator-(const Vector& v);
 
 // function prototypes
+double infinity_norm(Vector& v);
 double norm(Vector& v, int p=2);
 // Prototype signature of length() friend function
 int length(const Vector& v);

@@ -16,7 +16,7 @@ Vector::Vector(int sizeVal)
 {
   mData=new double[sizeVal];
   mSize = sizeVal;
-  for (int i=0; i<mSize; i++)
+  for (int i=0; i<mSize; ++i)
   {
      mData[i] = 0.0;
   }
@@ -28,10 +28,10 @@ Vector::Vector(int sizeVal, std::initializer_list<double> input)
   mSize = sizeVal;
   int k = 0;
 
-  for (int i=0; i<mSize; i++)
+  for (int i=0; i<mSize; ++i)
   {
      mData[i] = input.begin()[k];
-     k++;
+     ++k;
   }
 }
 
@@ -42,7 +42,7 @@ Vector::Vector(const Vector& v1)
 {
   mSize = v1.mSize;
   mData=new double[mSize];
-  for (int i=0; i<v1.mSize; i++)
+  for (int i=0; i<v1.mSize; ++i)
   {
     mData[i] = v1.mData[i];
   }
@@ -89,16 +89,16 @@ Vector operator+(const Vector& v1,
   //  add the vectors
   //  if one vector is shorter than the other assume missing entries are 0
   if (v1.mSize == v2.mSize) {
-    for (int i=0; i<v1.mSize; i++) {
+    for (int i=0; i<v1.mSize; ++i) {
        w.mData[i] = v1.mData[i] + v2.mData[i];
     }
 
   } else if (v1.mSize > v2.mSize) {
 
-    for (int i=0; i<v2.mSize; i++) {
+    for (int i=0; i<v2.mSize; ++i) {
        w.mData[i] = v1.mData[i] + v2.mData[i];
      }
-    for (int i=v2.mSize; i<v1.mSize; i++) {
+    for (int i=v2.mSize; i<v1.mSize; ++i) {
 	     w.mData[i] = v1.mData[i];
 	  }
     std::cerr<<"vector add - vectors different lengths\n";
@@ -106,11 +106,11 @@ Vector operator+(const Vector& v1,
   }
 
   else {
-      for (int i=0; i<v1.mSize; i++)
+      for (int i=0; i<v1.mSize; ++i)
 	{
 	  w.mData[i] = v1.mData[i] + v2.mData[i];
 	}
-      for (int i=v1.mSize; i<v2.mSize; i++)
+      for (int i=v1.mSize; i<v2.mSize; ++i)
 	{
 	  w.mData[i] = v2.mData[i];
 	}
@@ -151,7 +151,7 @@ Vector operator-(const Vector& v1,
 //  if one vector is shorter than the other assume missing entries are 0
   if (v1.mSize == v2.mSize)
     {
-      for (int i=0; i<v1.mSize; i++)
+      for (int i=0; i<v1.mSize; ++i)
 	{
 	  w.mData[i] = v1.mData[i] - v2.mData[i];
 	}
@@ -159,11 +159,11 @@ Vector operator-(const Vector& v1,
 
   else if (v1.mSize > v2.mSize)
     {
-      for (int i=0; i<v2.mSize; i++)
+      for (int i=0; i<v2.mSize; ++i)
 	{
 	  w.mData[i] = v1.mData[i] - v2.mData[i];
 	}
-      for (int i=v2.mSize; i<v1.mSize; i++)
+      for (int i=v2.mSize; i<v1.mSize; ++i)
 	{
 	  w.mData[i] = v1.mData[i];
 	}
@@ -173,11 +173,11 @@ Vector operator-(const Vector& v1,
 
   else
     {
-      for (int i=0; i<v1.mSize; i++)
+      for (int i=0; i<v1.mSize; ++i)
 	{
 	  w.mData[i] = v1.mData[i] - v2.mData[i];
 	}
-      for (int i=v1.mSize; i<v2.mSize; i++)
+      for (int i=v1.mSize; i<v2.mSize; ++i)
 	{
 	  w.mData[i] = v2.mData[i];
 	}
@@ -228,7 +228,7 @@ double operator*(const Vector& v1, const Vector& v2)
 
   dp = 0.0;
 
-  for (int i=0; i<n; i++)
+  for (int i=0; i<n; ++i)
     {
       dp += v1.mData[i] * v2.mData[i];
     }
@@ -251,7 +251,7 @@ Vector operator*(const Vector& v, const double& a)
 
   Vector w(v.mSize);
 
-  for (int i=0; i<v.mSize; i++)
+  for (int i=0; i<v.mSize; ++i)
     {
       w.mData[i] = a * v.mData[i];
     }
@@ -270,7 +270,7 @@ Vector operator*(const double& a, const Vector& v)
 
   Vector w(v.mSize);
 
-  for (int i=0; i<v.mSize; i++)
+  for (int i=0; i<v.mSize; ++i)
     {
       w.mData[i] = a * v.mData[i];
     }
@@ -292,7 +292,7 @@ Vector operator/(const Vector& v, const double& a)
 
   Vector w(v.mSize);
 
-  for (int i=0; i<v.mSize; i++)
+  for (int i=0; i<v.mSize; ++i)
     {
       w.mData[i] = v.mData[i] / a;
     }
@@ -302,14 +302,15 @@ Vector operator/(const Vector& v, const double& a)
 
 Vector operator/(const Vector& vec, const Matrix& mat) {
   int rows = mat.mSize[0]; int cols = mat.mSize[1];
+  // assert(size(A)[0] == n && size(A)[0] == size(A)[1]);
   assert(rows == vec.mSize);
   assert(cols == rows);
 
   Vector::Vector out(rows); // This initializes zero vector
   Matrix::Matrix augmented_mat(rows, cols + 1);
 
-  for (int i = 0; i < rows; i++) {
-    for (int j = 0; j < cols; j++) {
+  for (int i = 0; i < rows; ++i) {
+    for (int j = 0; j < cols; ++j) {
       augmented_mat.mData[i][j] = mat.mData[i][j];
       augmented_mat.mData[i][cols] = vec.mData[i];
     }
@@ -318,11 +319,11 @@ Vector operator/(const Vector& vec, const Matrix& mat) {
   double pivot, l;
   int max_row;
 
-  for (int j = 0; j < cols; j++) {
+  for (int j = 0; j < cols; ++j) {
     // Search for maximum in current column
     pivot = fabs(augmented_mat.mData[j][j]);
     max_row = j;
-    for (int i = j + 1; i < rows; i++) {
+    for (int i = j + 1; i < rows; ++i) {
         if (fabs(augmented_mat.mData[i][j]) > pivot) {
             pivot = fabs(augmented_mat.mData[i][j]);
             max_row = i;
@@ -332,7 +333,7 @@ Vector operator/(const Vector& vec, const Matrix& mat) {
     // Swap current row with maximum row
     if (max_row != j) { // Only done if rows are different
       // std::cout << "Pivoting \n";
-      for (int k = j; k < cols + 1; k++) {
+      for (int k = j; k < cols + 1; ++k) {
         double tmp = augmented_mat.mData[max_row][k];
         augmented_mat.mData[max_row][k] = augmented_mat.mData[j][k];
         augmented_mat.mData[j][k] = tmp;
@@ -341,9 +342,9 @@ Vector operator/(const Vector& vec, const Matrix& mat) {
 
 
     pivot = augmented_mat.mData[j][j]; // This is necessary because we had abs
-    for (int i = j + 1; i < rows; i++) {
+    for (int i = j + 1; i < rows; ++i) {
       l = augmented_mat.mData[i][j] / pivot;
-      for (int k = j; k < cols + 1; k++) {
+      for (int k = j; k < cols + 1; ++k) {
         augmented_mat.mData[i][k] -= l*augmented_mat.mData[j][k];
       }
     }
@@ -370,7 +371,7 @@ Vector operator-(const Vector& v)
 
   Vector w(v.mSize);
 
-  for (int i=0; i<v.mSize; i++)
+  for (int i=0; i<v.mSize; ++i)
     {
       w.mData[i] = -v.mData[i];
     }
@@ -400,11 +401,11 @@ Vector& Vector::operator=(const Vector& v)
     }
   else if (v.mSize < mSize)
     {
-      for (int i=0; i<v.mSize; i++)
+      for (int i=0; i<v.mSize; ++i)
 	{
 	  mData[i] = v.mData[i];
 	}
-      for (int i=v.mSize; i<mSize; i++)
+      for (int i=v.mSize; i<mSize; ++i)
 	{
 	  mData[i] = 0.0;
 	}
@@ -413,7 +414,7 @@ Vector& Vector::operator=(const Vector& v)
     }
   else
     {
-      for (int i=0; i<mSize; i++)
+      for (int i=0; i<mSize; ++i)
 	{
 	  mData[i] = v.mData[i];
 	}
@@ -452,7 +453,7 @@ double& Vector::operator()(int i)
 
 std::ostream& operator<<(std::ostream& output, const Vector& v) {
   output << "(";
-  for (int i=0; i<v.mSize; i++)
+  for (int i=0; i<v.mSize; ++i)
     {
       output <<  v.mData[i];
       if (i != v.mSize-1)
@@ -463,6 +464,13 @@ std::ostream& operator<<(std::ostream& output, const Vector& v) {
   return output;  // for multiple << operators.
 }
 
+double infinity_norm(Vector& v) {
+  double out = 0.0;
+  for (int i = 1; i <= length(v); i++) {
+    out = std::max(fabs(v(i)), out);
+  }
+  return out;
+}
 
 
 // Friend function
@@ -473,7 +481,7 @@ double norm(Vector& v, int p)
   double temp, norm_val;
 
   norm_val = 0.0;
-  for (int i=1; i<=length(v); i++)
+  for (int i=1; i<=length(v); ++i)
     {
       temp = fabs(v(i));
       norm_val += pow(temp, p);
@@ -489,7 +497,7 @@ double Vector::norm(int p) const
   double temp, norm_val;
 
   norm_val = 0.0;
-  for (int i=0; i<mSize; i++)
+  for (int i=0; i<mSize; ++i)
     {
       temp = fabs(mData[i]);
       norm_val += pow(temp, p);
@@ -510,7 +518,7 @@ int length(const Vector& v)
 Vector diag(const Matrix& mat) {
   int n = std::min(mat.mSize[0], mat.mSize[1]);
   Vector out(n);
-  for (int i = 0; i < n; i++) {
+  for (int i = 0; i < n; ++i) {
     out.mData[i] = mat.mData[i][i];
   }
   return out;
